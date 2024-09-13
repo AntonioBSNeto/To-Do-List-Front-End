@@ -9,6 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Spinner } from '../components/spinner'
 import { toast } from 'react-toastify'
 import { login } from '../service/api/authService'
+import { useAppDispatch } from '../redux/hooks'
+import { setCredentials } from '../redux/features/auth/authSlice'
 
 
 const validationSchema = object({
@@ -32,25 +34,15 @@ export const Login = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleLogin: SubmitHandler<LoginInput> = async (data) => {
     try {
       setIsLoading(true)
       const loginResponse = await login(data.email, data.password)
-      // depois do login busca as informacoes do usuario que acabou de ser validado
-     // const userResponse = await getUser(loginResponse.access_token)
-
-      // const user = {
-      //   id: userResponse.id,
-      //   email: userResponse.email,
-      //   name: userResponse.name,
-      //   role: userResponse.role,
-      //   avatar: userResponse.avatar
-      // }
       // // redux para manter as informacoes do usuario dentro de toda o site
-      // dispatch(setCredentials({ user, access_token: loginResponse?.access_token, refresh_token: loginResponse?.refresh_token }))
+      dispatch(setCredentials({ userId: loginResponse?.userId , access_token: loginResponse?.access_token, refresh_token: loginResponse?.refresh_token }))
       toast.success('Login bem sucedido!')
       navigate('/home')
     } catch (error) {
