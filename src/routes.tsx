@@ -5,6 +5,7 @@ import { Home } from './pages/Home'
 import { Header } from './components/header/header'
 import { NoAuthRequired, RequireAuth } from './utils/routeProtection'
 import { Task } from './pages/Task'
+import { Members } from './pages/Members'
 
 export default function Router() {
   return (
@@ -19,6 +20,7 @@ export default function Router() {
             <Route path='/tarefas' element={<Home />} />
             <Route path='/tarefas/adicionar' element={<Task />} />
             <Route path='/tarefas/editar/:taskId' element={<Task />} />
+            <Route path='/membros' element={<Members />} />
           </Route>
         </Route>
       </Routes>

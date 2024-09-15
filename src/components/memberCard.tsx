@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { Tarefa } from "../utils/types/tarefa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentAccessToken } from "../redux/features/auth/authSlice";
-import { removeTask, updateTask } from "../service/api/taskService";
 import { DropdownCard } from "./dropdownCard";
+import { Membro } from "../utils/types/membro";
+import { removeMember } from "../service/api/memberService";
+import { reach } from "yup";
 
-interface TaskCardProps {
-  task: Tarefa,
+interface MemberCardProps {
+  member: Membro,
   readonly: boolean,
-  deleteTask: any
+  deleteMember: any
 }
 
-export const TaskCard = ({ task, readonly, deleteTask }: TaskCardProps) => {
+export const MemberCard = ({ member, readonly, deleteMember }: MemberCardProps) => {
   const navigate = useNavigate()
 
   const accessToken = useAppSelector(selectCurrentAccessToken)
@@ -25,8 +26,8 @@ export const TaskCard = ({ task, readonly, deleteTask }: TaskCardProps) => {
     // se houver um segundo clique e realizado a exclusao
     if (confirming) {
       try {
-        await removeTask(task.id + '', accessToken)
-        deleteTask(task.id)
+        await removeMember(member.id + '', accessToken)
+        deleteMember(member.id)
         toast.success('Tarefa removido com sucesso!')
       } catch (error) {
 
@@ -37,32 +38,19 @@ export const TaskCard = ({ task, readonly, deleteTask }: TaskCardProps) => {
     }
   };
 
-  const completeTask = async () => {
-    try {
-      await updateTask({ finalizada: true }, task.id + '', accessToken)
-      toast.success('Tarefa conclída!')
-    } catch (error) {
-
-    }
-  }
-
   const children = () => (
     <>
-      <p className=""><b>Prioridade:</b> {task.prioridade}</p>
-      <p className=""><b>Status:</b> {task.finalizada ? 'Concluída' : 'Pendenete'}</p>
+      <p className=""><b>Prioridade:</b> {member.email}</p>
+      <p className=""><b>Status:</b>{member.id}</p>
     </>
   )
 
   const dropdownContent = () => (
     <>
-      <p className="">
-        <b>Descrição: </b>
-        {task.descricao}
-      </p>
       {
         readonly ? '' : (
           <div className="flex w-full flex-wrap justify-end gap-6 mt-3">
-            <button className="h-8 min-w-[105px] px-4 rounded-lg bg-blue-regular text-white text-center text-lg items-center gap-x-2" onClick={() => navigate(`editar/${task.id}`, { state: task })}>Editar</button>
+            <button className="h-8 min-w-[105px] px-4 rounded-lg bg-blue-regular text-white text-center text-lg items-center gap-x-2" onClick={() => navigate(`editar/${member.id}`, { state: member })}>Editar</button>
             <button
               type='button'
               className={`${!confirming ? 'bg-[#EFE090]' : 'bg-rose-600'} h-8 min-w-[105px] px-4 rounded-lg bg-[#EFE090] text-[#2A2A2A] text-center text-lg items-center gap-x-2`}
@@ -70,11 +58,6 @@ export const TaskCard = ({ task, readonly, deleteTask }: TaskCardProps) => {
             >
               {confirming ? 'Confirme' : 'Remover'}
             </button>
-            {
-              !task.finalizada && (
-                <button className="h-8 min-w-[105px] px-4 rounded-lg bg-[#7CFF81] text-[#09090B] text-center text-lg  items-center gap-x-2" onClick={() => completeTask()}>Concluir</button>
-              )
-            }
           </div>
         )
       }
@@ -82,6 +65,6 @@ export const TaskCard = ({ task, readonly, deleteTask }: TaskCardProps) => {
   )
 
   return (
-    <DropdownCard title={task.nome} children={children()} dropdownContent={dropdownContent()} />
+    <DropdownCard title={member.nome} children={children()} dropdownContent={dropdownContent()} dropdown={!readonly} />
   )
 };
