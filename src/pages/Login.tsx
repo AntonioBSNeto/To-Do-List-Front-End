@@ -44,7 +44,7 @@ export const Login = () => {
       // // redux para manter as informacoes do usuario dentro de toda o site
       dispatch(setCredentials({ userId: loginResponse?.userId , access_token: loginResponse?.access_token, refresh_token: loginResponse?.refresh_token }))
       toast.success('Login bem sucedido!')
-      navigate('/home')
+      navigate('/tarefas')
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === "Unauthorized") {
