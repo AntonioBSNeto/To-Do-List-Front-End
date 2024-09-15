@@ -6,7 +6,7 @@ import { Header } from './components/header/header'
 import { NoAuthRequired, RequireAuth } from './utils/routeProtection'
 import { Task } from './pages/Task'
 import { Members } from './pages/Members'
-import { EditMember } from './pages/editMember'
+import { EditMember } from './pages/EditMember'
 
 export default function Router() {
   return (
