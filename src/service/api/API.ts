@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { store } from '../../redux/store'
+import { logOut } from '../../redux/features/auth/authSlice'
 
 const API_BASE_URL = 'http://localhost:3000'
 
@@ -13,6 +15,7 @@ API.interceptors.response.use(
   error => {
     // caso haja uma solicitacao feita por um cliente com token expirado, ele e deslogado
     if (error?.response?.status === 401) {
+      store.dispatch(logOut())
       localStorage.setItem('isTokenExpired', '1')
     }
     throw error

@@ -1,15 +1,9 @@
 export interface Tarefa {
-  id: string;
+  id?: string;
   nome: string;
   descricao: string;
   finalizada: boolean;
-  dataFinalizada: Date;
-  prioridade: Prioridade;
+  dataFinalizada?: Date;
+  prioridade: 'BAIXA' | 'MEDIA' | 'ALTA';
   membroId: string;
-}
-
-enum Prioridade {
-  BAIXA = "BAIXA",
-  MEDIA = "MEDIA",
-  ALTA = "ALTA"
 }
