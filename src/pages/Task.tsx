@@ -29,7 +29,6 @@ export const Task = () => {
     formState: { errors }
   } = useForm({ resolver: yupResolver(validationSchema) })
 
-
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()

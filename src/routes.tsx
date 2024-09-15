@@ -6,6 +6,7 @@ import { Header } from './components/header/header'
 import { NoAuthRequired, RequireAuth } from './utils/routeProtection'
 import { Task } from './pages/Task'
 import { Members } from './pages/Members'
+import { EditMember } from './pages/editMember'
 
 export default function Router() {
   return (
@@ -21,6 +22,7 @@ export default function Router() {
             <Route path='/tarefas/adicionar' element={<Task />} />
             <Route path='/tarefas/editar/:taskId' element={<Task />} />
             <Route path='/membros' element={<Members />} />
+            <Route path='/membros/editar/:memberId' element={<EditMember />} />
           </Route>
         </Route>
       </Routes>

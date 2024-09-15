@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAppSelector } from "../redux/hooks";
-import { selectCurrentAccessToken } from "../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { logOut, selectCurrentAccessToken } from "../redux/features/auth/authSlice";
 import { DropdownCard } from "./dropdownCard";
 import { Membro } from "../utils/types/membro";
 import { removeMember } from "../service/api/memberService";
-import { reach } from "yup";
 
 interface MemberCardProps {
   member: Membro,
@@ -18,6 +17,7 @@ export const MemberCard = ({ member, readonly, deleteMember }: MemberCardProps) 
   const navigate = useNavigate()
 
   const accessToken = useAppSelector(selectCurrentAccessToken)
+  const dispatch = useAppDispatch()
 
   // controlador para lidar com um delecao em duas etapas
   const [confirming, setConfirming] = useState(false);
@@ -28,7 +28,8 @@ export const MemberCard = ({ member, readonly, deleteMember }: MemberCardProps) 
       try {
         await removeMember(member.id + '', accessToken)
         deleteMember(member.id)
-        toast.success('Tarefa removido com sucesso!')
+        dispatch(logOut())
+        toast.success('Membro removido com sucesso!')
       } catch (error) {
 
       }

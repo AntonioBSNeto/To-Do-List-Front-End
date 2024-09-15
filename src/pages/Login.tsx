@@ -49,6 +49,8 @@ export const Login = () => {
       if (error instanceof Error) {
         if (error.message === "Unauthorized") {
           toast.error('Email ou senha incorretos.')
+        } else if (error.message == 'Not Found') {
+          toast.error('Usuário não encontrado')
         }
       }
     } finally {
